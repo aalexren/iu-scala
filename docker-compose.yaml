@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: shortenerdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+
+  flyway:
+    image: flyway/flyway
+    environment:
+      FLYWAY_PASSWORD: password
+      FLYWAY_USER: postgres
+    volumes:
+      - ./shortener/src/main/resources/db/migration:/flyway/sql
+    command: -url=jdbc:postgresql://postgres:5432/shortenerdb -connectRetries=1 migrate -X
+    depends_on:
+      - postgres
+
+  url-shortener:
+    image: shortener:1.0.0
+    environment:
+      DB_URL: postgres
+      DB_USER: postgres
+      DB_PASS: password
+      DB_NAME: shortenerdb
+    ports:
+      - "1234:1234"
+    depends_on:
+      - postgres
+      - flyway
+
+volumes:
+  postgres:
