@@ -13,7 +13,11 @@ import java.time.Instant
 
 trait UrlSql {
   def findByKey(key: ShortenedUrlKey): ConnectionIO[Option[ShortenedUrl]]
-  def createUrl(key: ShortenedUrlKey, url: CreateShortenedUrl, created_at: CustomDate): ConnectionIO[ShortenedUrl]
+  def createUrl(
+    key: ShortenedUrlKey,
+    url: CreateShortenedUrl,
+    created_at: CustomDate
+  ): ConnectionIO[ShortenedUrl]
 }
 
 object UrlSql {
@@ -23,10 +27,14 @@ object UrlSql {
       sql"""
            SELECT *
            FROM urls
-           WHERE key = ${key.value}
+           WHERE key=${key.value}
       """.query[ShortenedUrl]
 
-    def createUrlSql(key: ShortenedUrlKey, url: CreateShortenedUrl, created_at: CustomDate): Update0 =
+    def createUrlSql(
+      key: ShortenedUrlKey,
+      url: CreateShortenedUrl,
+      created_at: CustomDate
+    ): Update0 =
       sql"""
            INSERT INTO urls (key, url, created_at)
            VALUES (${key.value}, ${url.url.value}, ${created_at.value.toEpochMilli})
@@ -43,13 +51,11 @@ object UrlSql {
     override def createUrl(
       key: ShortenedUrlKey,
       url: CreateShortenedUrl,
-      created_at: CustomDate,
+      created_at: CustomDate
     ): ConnectionIO[ShortenedUrl] = {
       createUrlSql(key, url, created_at)
         .withUniqueGeneratedKeys[ShortenedUrlKey]("key")
-        .map((key: ShortenedUrlKey) =>
-          ShortenedUrl(key, url.url, created_at)
-        )
+        .map((key: ShortenedUrlKey) => ShortenedUrl(key, url.url, created_at))
     }
   }
 

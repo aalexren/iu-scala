@@ -28,7 +28,10 @@ libraryDependencies ++= Seq(
   "io.estatico" %% "newtype" % "0.4.4",
   "com.github.pureconfig" %% "pureconfig" % "0.17.4",
   "org.http4s" %% "http4s-ember-server" % "0.23.19",
-  "com.softwaremill.sttp.tapir" %% "tapir-derevo" % "1.9.2"
+  "com.softwaremill.sttp.tapir" %% "tapir-derevo" % "1.9.2",
+  "com.softwaremill.sttp.client3" %% "core" % "3.3.15",
+  "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % "1.9.5"
+
 )
 
 dependencyOverrides += "io.circe" %% "circe-core" % "0.14.3"
@@ -38,3 +41,5 @@ scalacOptions ++= Seq("-Ymacro-annotations")
 enablePlugins(UniversalPlugin)
 enablePlugins(DockerPlugin)
 enablePlugins(JavaAppPackaging)
+
+dockerBaseImage := "openjdk:17-jdk-slim"

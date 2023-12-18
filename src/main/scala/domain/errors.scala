@@ -18,6 +18,13 @@ object errors {
   case class UrlNotFound(key: ShortenedUrlKey)
     extends AppError(s"URL with shorten version ${key.value} not found")
   @derive(encoder, decoder)
+  case class ServiceUnavailable(key: ShortenedUrlKey)
+    extends AppError(s"Service with with shorten url version ${key.value} unavailable")
+
+  @derive(encoder, decoder)
+  case class InvalidUrlFormat(url: String) extends AppError(s"Invalid URL format: $url")
+
+  @derive(encoder, decoder)
   case class InternalError(
     cause0: Throwable
   ) extends AppError("Internal error", cause0.some)

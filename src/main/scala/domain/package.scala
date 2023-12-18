@@ -36,18 +36,18 @@ package object domain {
       Schema.schemaForString.map(string => Some(OriginalUrl(string)))(_.value)
   }
 
-  @derive(loggable, encoder, decoder)
-  @newtype
-  case class ResourceAvailabilityCheckUrl(value: String)
-
-  object ResourceAvailabilityCheckUrl {
-    implicit val read: Read[ResourceAvailabilityCheckUrl] =
-      Read[String].map(ResourceAvailabilityCheckUrl.apply)
-    implicit val schema: Schema[ResourceAvailabilityCheckUrl] =
-      Schema.schemaForString.map(string => Some(ResourceAvailabilityCheckUrl(string)))(_.value)
-    implicit val codec: Codec[String, ResourceAvailabilityCheckUrl, CodecFormat.TextPlain] =
-      Codec.string.map(ResourceAvailabilityCheckUrl(_))(_.value)
-  }
+//  @derive(loggable, encoder, decoder)
+//  @newtype
+//  case class ResourceAvailabilityCheckUrl(value: String)
+//
+//  object ResourceAvailabilityCheckUrl {
+//    implicit val read: Read[ResourceAvailabilityCheckUrl] =
+//      Read[String].map(ResourceAvailabilityCheckUrl.apply)
+//    implicit val schema: Schema[ResourceAvailabilityCheckUrl] =
+//      Schema.schemaForString.map(string => Some(ResourceAvailabilityCheckUrl(string)))(_.value)
+//    implicit val codec: Codec[String, ResourceAvailabilityCheckUrl, CodecFormat.TextPlain] =
+//      Codec.string.map(ResourceAvailabilityCheckUrl(_))(_.value)
+//  }
 
   @derive(loggable, encoder, decoder)
   @newtype
@@ -57,7 +57,9 @@ package object domain {
     implicit val read: Read[ResourceAvailabilityCheckResult] =
       Read[Boolean].map(ResourceAvailabilityCheckResult.apply)
     implicit val schema: Schema[ResourceAvailabilityCheckResult] =
-      Schema.schemaForBoolean.map(boolean => Some(ResourceAvailabilityCheckResult(boolean)))(_.value)
+      Schema.schemaForBoolean.map(boolean => Some(ResourceAvailabilityCheckResult(boolean)))(
+        _.value
+      )
     implicit val codec: Codec[String, ResourceAvailabilityCheckResult, CodecFormat.TextPlain] =
       Codec.boolean.map(ResourceAvailabilityCheckResult(_))(_.value)
   }

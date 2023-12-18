@@ -18,7 +18,7 @@ services:
       FLYWAY_PASSWORD: password
       FLYWAY_USER: postgres
     volumes:
-      - ./shortener/src/main/resources/db/migration:/flyway/sql
+      - ./src/main/resources/db/migration:/flyway/sql
     command: -url=jdbc:postgresql://postgres:5432/shortenerdb -connectRetries=1 migrate -X
     depends_on:
       - postgres
